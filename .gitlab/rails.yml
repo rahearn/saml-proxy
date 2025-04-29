@@ -1,6 +1,5 @@
 include:
   - local: ".gitlab/ruby.yml"
-  - local: ".gitlab/node.yml"
 
 # Cache Helpers
 .cache-dependencies:
@@ -10,18 +9,15 @@ include:
     key:
       files:
         - Gemfile.lock
-        - yarn.lock
       prefix: dependencies
     paths:
       - vendor/ruby
-      - node_modules/
     policy: pull
 
 # Language Helpers
 .setup-languages:
   before_script:
     - !reference [.setup-ruby]
-    - !reference [.setup-node]
 
 # Project Helpers
 .setup-project:
@@ -40,9 +36,7 @@ include:
     RAILS_ENV: ci
     SECRET_KEY_BASE_DUMMY: 1
   before_script:
-    - !reference [.setup-node]
     - !reference [.setup-project, before_script]
-    - bin/rake assets:precompile
     - PORT=3000 bin/rails server > /dev/null 2>&1 &
     - sleep 5
 
@@ -60,16 +54,3 @@ include:
     expose_as: "OWASP Report"
     paths:
       - zap_report.html
-
-.assets:builder:
-  stage: deploy
-  extends: .setup-languages
-  dependencies: []
-  variables:
-    SECRET_KEY_BASE_DUMMY: 1
-  script:
-    - bin/rake assets:precompile
-    - bin/rake assets:clean
-  artifacts:
-    paths:
-      - public/assets

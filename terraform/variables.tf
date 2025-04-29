@@ -30,14 +30,6 @@ variable "allow_space_ssh" {
   description = "Whether to allow ssh to cf_space_name"
 }
 
-# supporting services settings
-variable "rds_plan_name" {
-  type        = string
-  default     = "micro-psql"
-  description = "The name of the rds plan to create"
-}
-
-
 # routing settings
 variable "custom_domain_name" {
   type        = string
@@ -72,4 +64,3 @@ variable "web_memory" {
   default     = "256M"
   description = "The amount of memory to assign to the web processes"
 }
-

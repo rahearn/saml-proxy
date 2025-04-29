@@ -1,10 +1,11 @@
 require "rails_helper"
 
 RSpec.describe "Pages", type: :request do
-  describe "GET /home" do
-    it "returns http success" do
+  describe "GET /" do
+    it "redirects to GDG" do
+      allow(Rails.env).to receive(:production?).and_return true
       get "/"
-      expect(response).to have_http_status(:success)
+      expect(response).to redirect_to("https://gsa.gitlab-dedicated.us")
     end
   end
 end

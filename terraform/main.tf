@@ -16,16 +16,6 @@ module "app_space" {
   security_group_names = ["trusted_local_networks_egress"]
 }
 
-module "database" {
-  source = "github.com/gsa-tts/terraform-cloudgov//database?ref=v2.3.0"
-
-  cf_space_id   = module.app_space.space_id
-  name          = "${local.app_name}-rds-${var.env}"
-  rds_plan_name = var.rds_plan_name
-  # depends_on line is required only for initial creation and destruction. It can be commented out for updates if you see unwanted cascading effects
-  depends_on = [module.app_space]
-}
-
 ###########################################################################
 # Before setting var.custom_domain_name, ensure the ACME challenge record has been created:
 # See https://cloud.gov/docs/services/external-domain-service/#how-to-create-an-instance-of-this-service

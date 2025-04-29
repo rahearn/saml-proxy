@@ -20,7 +20,6 @@ variables:
 
 include:
   - local: ".gitlab/ruby.yml"
-  - local: ".gitlab/node.yml"
   - local: ".gitlab/rails.yml"
   - local: ".gitlab/terraform.yml"
 
@@ -38,13 +37,6 @@ build-project:
     policy: pull-push
   script:
     - !reference [.bundle-install]
-    - !reference [.yarn-install]
-    - bin/rake assets:precompile
-  artifacts:
-    expire_in: 1 hour
-    paths:
-      - app/assets/builds
-      - public/assets
   rules:
     - if: $CI_PIPELINE_SOURCE != "schedule"
 
@@ -63,7 +55,6 @@ dependency_scanning:
   extends: .setup-languages
   script:
     - bin/rake bundler:audit
-    - bin/rake yarn:audit
     - gem install cyclonedx-ruby
     - cyclonedx-ruby -p . -o ruby_bom.xml
   artifacts:
@@ -76,15 +67,6 @@ rspec:
   extends: .setup-project
   script:
     - bundle exec rspec
-  rules:
-    - if: $CI_PIPELINE_SOURCE != "schedule"
-
-pa11y_scan:
-  stage: test
-  extends: .run-server
-  script:
-    - !reference [.install-puppet-deps]
-    - yarn run pa11y-ci -c pa11yci.js
   rules:
     - if: $CI_PIPELINE_SOURCE != "schedule"
 
@@ -114,51 +96,10 @@ terraform:validate:
   script:
     - terraform validate
 
-terraform:assets:staging:
-  extends: .assets:builder
-  cache:
-    - !reference [.cache-dependencies, cache]
-    - key: staging-assets
-      unprotect: true
-      paths:
-        - public/assets
-        - app/assets/builds
-      policy: $CACHE_POLICY
-  variables:
-    RAILS_ENV: staging
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "schedule"
-      when: never
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-      variables:
-        CACHE_POLICY: pull-push
-    - variables:
-        CACHE_POLICY: pull
-
-terraform:assets:production:
-  extends: .assets:builder
-  cache:
-    - !reference [.cache-dependencies, cache]
-    - key: production-assets
-      paths:
-        - public/assets
-        - app/assets/builds
-      policy: $CACHE_POLICY
-  variables:
-    RAILS_ENV: production
-  rules:
-    - if: $CI_COMMIT_BRANCH == "production"
-      variables:
-        CACHE_POLICY: pull-push
-    - if: $CI_PIPELINE_SOURCE != "schedule"
-      variables:
-        CACHE_POLICY: pull
-
 terraform:plan:staging:
   extends:
     - .terraform:setup
     - .terraform:variables:staging
-  needs: ["terraform:assets:staging"]
   script:
     - apk add zip
     - terraform plan -out=staging_plan.out -var-file=staging.tfvars -var rails_master_key=$RAILS_MASTER_KEY -var cf_user=$CF_USERNAME
@@ -171,9 +112,9 @@ terraform:apply:staging:
   extends:
     - .terraform:setup
     - .terraform:variables:staging
+  dependencies: null
   needs:
     - terraform:plan:staging
-    - terraform:assets:staging
   script:
     - apk add zip
     - terraform apply -var-file=staging.tfvars -var rails_master_key=$RAILS_MASTER_KEY -var cf_user=$CF_USERNAME staging_plan.out
@@ -186,7 +127,6 @@ terraform:plan:production:
   extends:
     - .terraform:setup
     - .terraform:variables:production
-  needs: ["terraform:assets:production"]
   script:
     - apk add zip
     - terraform plan -out=production_plan.out -var-file=production.tfvars -var rails_master_key=$PRODUCTION_RAILS_MASTER_KEY -var cf_user=$CF_USERNAME
@@ -199,9 +139,9 @@ terraform:apply:production:
   extends:
     - .terraform:setup
     - .terraform:variables:production
+  dependencies: null
   needs:
     - terraform:plan:production
-    - terraform:assets:production
   script:
     - apk add zip
     - terraform apply -var-file=production.tfvars -var rails_master_key=$PRODUCTION_RAILS_MASTER_KEY -var cf_user=$CF_USERNAME production_plan.out

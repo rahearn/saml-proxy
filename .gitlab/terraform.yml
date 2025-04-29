@@ -17,12 +17,10 @@
     - if: $CI_PIPELINE_SOURCE != "schedule"
 
 .terraform:variables:staging:
-  dependencies: null
   variables:
     CF_USER: $CF_USERNAME
 
 .terraform:variables:production:
-  dependencies: null
   variables:
     CF_USER: $CF_USERNAME
     TERRAFORM_BACKEND_KEY: terraform.tfstate.production
