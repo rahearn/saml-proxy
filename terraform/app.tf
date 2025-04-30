@@ -30,12 +30,13 @@ resource "cloudfoundry_app" "app" {
   strategy         = "rolling"
 
   environment = {
-    RAILS_ENV                = var.env
-    RAILS_MASTER_KEY         = var.rails_master_key
-    RAILS_LOG_TO_STDOUT      = "true"
-    RAILS_SERVE_STATIC_FILES = "true"
-    egress_proxy             = module.egress_proxy.https_proxy
-    no_proxy                 = "apps.internal"
+    RAILS_ENV                  = var.env
+    RAILS_MASTER_KEY           = var.rails_master_key
+    RAILS_LOG_TO_STDOUT        = "true"
+    RAILS_SERVE_STATIC_FILES   = "true"
+    egress_proxy               = module.egress_proxy.https_proxy
+    no_proxy                   = "apps.internal"
+    SAML_FORM_SUBMISSION_HOSTS = join(",", var.saml_hosts)
   }
 
   processes = [

@@ -1,4 +1,7 @@
-<h1>Oidc#callback</h1>
-<pre>
-  <%= JSON.pretty_generate @jwt %>
-</pre>
+<%= form_tag(saml_auth_path) do %>
+  <%= hidden_field_tag("SAMLRequest", session[:SAMLRequest]) %>
+  <%= hidden_field_tag("RelayState", session[:RelayState]) %>
+  <%= hidden_field_tag("state", params[:state]) %>
+  <%= hidden_field_tag("token", @token) %>
+  <%= submit_tag "Submit" %>
+<% end %>

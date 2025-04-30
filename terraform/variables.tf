@@ -63,3 +63,11 @@ variable "web_memory" {
   default     = "256M"
   description = "The amount of memory to assign to the web processes"
 }
+
+variable "saml_hosts" {
+  type        = set(string)
+  description = "The hosts that the app can redirect users back to"
+  default = [
+    "gsa.gitlab-dedicated.us"
+  ]
+}

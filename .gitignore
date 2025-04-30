@@ -53,6 +53,8 @@ spec/examples.txt
 
 /node_modules
 
+/coverage
+
 # Terraform
 .terraform.lock.hcl
 **/.terraform/*

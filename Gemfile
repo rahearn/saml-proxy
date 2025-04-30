@@ -11,6 +11,7 @@ gem "puma", ">= 5.0"
 gem "openid_connect", "~> 2.3"
 gem "faraday-typhoeus", "~> 1.1"
 gem "jwt", "~> 2.10"
+gem "saml_idp", "~> 0.16"
 
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", require: false
@@ -43,4 +44,5 @@ gem "rails_template_18f", group: :development
 group :test do
   gem "climate_control", "~> 1.2"
   gem "vcr", "~> 6.3"
+  gem "simplecov", "~> 0.22", require: false
 end
