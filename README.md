@@ -184,6 +184,13 @@ Otherwise:
 
 Configuration that changes by environment, but is public, should be added to the `tfvars` files, such as `terraform/production.tfvars` and `terraform/staging.tfvars`
 
+### Public Egress Proxy
+
+Traffic to be delivered to the public internet must be proxied through the [cg-egress-proxy](https://github.com/GSA-TTS/cg-egress-proxy) app. Hostnames that the app should be able to
+reach should be added to the `egress_allowlist` terraform variable in `terraform/production.tfvars` and `terraform/staging.tfvars`
+
+See the [ruby troubleshooting doc](https://github.com/GSA-TTS/cg-egress-proxy/blob/main/docs/ruby.md) first if you have any problems making outbound connections through the proxy.
+
 ## Documentation
 
 ### Architectural Decision Records

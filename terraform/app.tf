@@ -25,6 +25,7 @@ resource "cloudfoundry_app" "app" {
   strategy         = "rolling"
 
   environment = {
+    no_proxy                 = "apps.internal,s3-fips.us-gov-west-1.amazonaws.com"
     RAILS_ENV                = var.env
     RAILS_MASTER_KEY         = var.rails_master_key
     RAILS_LOG_TO_STDOUT      = "true"
@@ -42,7 +43,12 @@ resource "cloudfoundry_app" "app" {
     }
   ]
 
+  service_bindings = [
+    { service_instance = cloudfoundry_service_instance.egress_proxy_credentials.name }
+  ]
+
   depends_on = [
+    cloudfoundry_service_instance.egress_proxy_credentials,
     module.app_space
   ]
 }

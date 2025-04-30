@@ -28,6 +28,11 @@ Boundary(aws, "AWS GovCloud") {
         System_Ext(cloudgov_router, "<&layers> cloud.gov routers", "Cloud Foundry traffic service")
         Boundary(atob, "ATO boundary") {
             System_Boundary(inventory, "Application") {
+                Boundary(restricted_space, "Restricted egress space") {
+                }
+                Boundary(egress_space, "Public egress space") {
+                    Container(proxy, "<&layers> Egress Proxy", "Caddy, cg-egress-proxy", "Proxy with allow-list of external connections")
+                }
                 Container(app, "<&layers> Saml Proxy", "Ruby 3.3.6, Rails 8.0.2", "TKTK Application Description")
                 ContainerDb(app_db, "Application DB", "AWS RDS (PostgreSQL)", "Primary data storage")
             }
@@ -48,6 +53,7 @@ Rel(cloudgov_router, app, "proxies requests", "https GET/POST (443)")
 Rel(app, app_db, "reads/writes primary data", "psql (5432)")
 Rel(developer, gitlabci, "Publish code", "git ssh (22)")
 Rel(gitlabci, cg_api, "Deploy App", "Auth: SpaceDeployer Service Account, https (443)")
+Rel(app, proxy, "Proxy outbound connections", "https (443)")
 @enduml
 ```
 

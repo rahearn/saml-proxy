@@ -64,3 +64,8 @@ variable "web_memory" {
   default     = "256M"
   description = "The amount of memory to assign to the web processes"
 }
+variable "egress_allowlist" {
+  type        = set(string)
+  default     = []
+  description = "The set of hostnames that the application is allowed to connect to"
+}
