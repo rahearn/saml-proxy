@@ -7,13 +7,12 @@ locals {
 module "app_space" {
   source = "github.com/gsa-tts/terraform-cloudgov//cg_space?ref=v2.3.0"
 
-  cf_org_name          = local.cf_org_name
-  cf_space_name        = var.cf_space_name
-  allow_ssh            = var.allow_space_ssh
-  deployers            = local.space_deployers
-  developers           = var.space_developers
-  auditors             = var.space_auditors
-  security_group_names = ["trusted_local_networks_egress"]
+  cf_org_name   = local.cf_org_name
+  cf_space_name = var.cf_space_name
+  allow_ssh     = var.allow_space_ssh
+  deployers     = local.space_deployers
+  developers    = var.space_developers
+  auditors      = var.space_auditors
 }
 
 ###########################################################################
