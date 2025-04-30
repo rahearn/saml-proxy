@@ -22,6 +22,7 @@ resource "cloudfoundry_app" "app" {
   name       = "${local.app_name}-${var.env}"
   space_name = var.cf_space_name
   org_name   = local.cf_org_name
+  enable_ssh = var.allow_space_ssh
 
   path             = data.archive_file.src.output_path
   source_code_hash = data.archive_file.src.output_base64sha256
@@ -29,11 +30,12 @@ resource "cloudfoundry_app" "app" {
   strategy         = "rolling"
 
   environment = {
-    no_proxy                 = "apps.internal,s3-fips.us-gov-west-1.amazonaws.com"
     RAILS_ENV                = var.env
     RAILS_MASTER_KEY         = var.rails_master_key
     RAILS_LOG_TO_STDOUT      = "true"
     RAILS_SERVE_STATIC_FILES = "true"
+    egress_proxy             = module.egress_proxy.https_proxy
+    no_proxy                 = "apps.internal"
   }
 
   processes = [
@@ -48,7 +50,6 @@ resource "cloudfoundry_app" "app" {
   ]
 
   service_bindings = [
-    { service_instance = cloudfoundry_service_instance.egress_proxy_credentials.name },
     {
       service_instance = cloudfoundry_service_instance.uaa_authentication_service.name,
       params = jsonencode({
@@ -60,7 +61,6 @@ resource "cloudfoundry_app" "app" {
   ]
 
   depends_on = [
-    cloudfoundry_service_instance.egress_proxy_credentials,
     cloudfoundry_service_instance.uaa_authentication_service,
     module.app_space
   ]

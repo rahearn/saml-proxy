@@ -1,0 +1,58 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://uaa.fr.cloud.gov/token_keys
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - Faraday v2.13.1
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: ''
+    headers:
+      date:
+      - Wed, 30 Apr 2025 14:57:47 GMT
+      content-type:
+      - application/json
+      vary:
+      - Accept-Encoding
+      cache-control:
+      - no-cache, no-store, max-age=0, must-revalidate
+      content-security-policy:
+      - script-src 'self'
+      etag:
+      - W/"1745927862144"
+      expires:
+      - '0'
+      pragma:
+      - no-cache
+      strict-transport-security:
+      - max-age=31536000 ; includeSubDomains
+      x-content-type-options:
+      - nosniff
+      x-vcap-request-id:
+      - '09dcf9a8-75ef-4726-7f54-7cc1e32b1778'
+      x-xss-protection:
+      - 1; mode=block
+      x-frame-options:
+      - DENY
+      content-encoding:
+      - gzip
+    body:
+      encoding: ASCII-8BIT
+      string: '{"keys":[{"kty":"RSA","e":"AQAB","use":"sig","kid":"key-1","alg":"RS256","value":"-----BEGIN
+        PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvQJsCDlbZF09Ve7BFmlb\nFiN5GHHHWxfQX90oyl68pT23FkjUpVZvud/HFxBqFZd0AswByWJaPra5wwP+7BPn\nG+K9yNioYnHrsgZfnaZ+srSyvX6QDbdvHg3Frp7fqFDtrUYq3AikZ8+YeLA7SEiO\nTyNzKVN9PdPIIT+XUfXISfBlh8QyW534UniBUVBlzqR0fmSyeuzZMPMwuo7XhGju\nuEVJN6Ccem+k3YshL2uY1xVu40QibK3ahll89UQG+CivrnOAd6p+KJu7kM1sRzhj\nabX+HgCPaVSfgcYuswNAlfjSPKzu++tdMj8mURehFW1L7tAKJcCcX7+IsEXUb3Um\nOQIDAQAB\n-----END
+        PUBLIC KEY-----","n":"vQJsCDlbZF09Ve7BFmlbFiN5GHHHWxfQX90oyl68pT23FkjUpVZvud_HFxBqFZd0AswByWJaPra5wwP-7BPnG-K9yNioYnHrsgZfnaZ-srSyvX6QDbdvHg3Frp7fqFDtrUYq3AikZ8-YeLA7SEiOTyNzKVN9PdPIIT-XUfXISfBlh8QyW534UniBUVBlzqR0fmSyeuzZMPMwuo7XhGjuuEVJN6Ccem-k3YshL2uY1xVu40QibK3ahll89UQG-CivrnOAd6p-KJu7kM1sRzhjabX-HgCPaVSfgcYuswNAlfjSPKzu--tdMj8mURehFW1L7tAKJcCcX7-IsEXUb3UmOQ"},{"kty":"RSA","x5t#S256":"TctvnRqpAbMbI8-E7efzsNPFI6OQP0WHoXJ9zmAShUk","e":"AQAB","use":"sig","x5t":"6SJHXdJxXjABRBQuUIQCNk6ZNy0","kid":"key-2","x5c":["MIIEYjCCAkqgAwIBAgIUF7V1DGQ4eFHKB1vPNiemqzjRZ5QwDQYJKoZIhvcNAQELBQAwRDEYMBYGA1UEChMPR1NBIC8gVFRTIC8gMThGMRIwEAYDVQQLEwljbG91ZC5nb3YxFDASBgNVBAMTC21hc3Rlci1ib3NoMB4XDTI0MDgyNzE3NTM1OFoXDTI1MDgyNzE3NTM1OFowHzEdMBsGA1UEAwwUdWFhX2p3dF9zaWduaW5nX2NlcnQwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQC2NKSQkSEBZ1a20Bs/aCRLFBOIF6XD0QU9NZtNzAFpt+JQeTQ8iqelaUKOFEwUmYZ6JkGH68Awdt1z2h0ZFDH+tkQa+rYC6AK084a8Y5wbujfCamLOTwJiVM1CpW8CBc+j8sv0eFt/dS8Cxbh4pglk1ockGE/yGcIOvAiOqoKK1htt2/ocIY+iJ6TA47T0541EzWuBwbtEzneQTfNGg7JFnMB/IBSD0PDgGhh7SVL37mAJVP9RSCHa95K2PDRL+TvUm8fZ6HnKq+lnx4mFLCM9f0g1l1CN0t9Stp5ZxWhcLJvNDH59lMXthF5eWz8grUdIzItIzZagpkfvq8t4LMG9AgMBAAGjcTBvMB0GA1UdDgQWBBTMqx6tDsYFzdSQjt1aH1rs/jOwZzAfBgNVHREEGDAWghR1YWFfand0X3NpZ25pbmdfY2VydDAfBgNVHSMEGDAWgBQMt4RMkSjFTJTPPzLKGr8lIkgBeDAMBgNVHRMBAf8EAjAAMA0GCSqGSIb3DQEBCwUAA4ICAQC09LlGzmBte7EZecIoTxyuGYpE2WPclCtFhfcACqbDGwUnqiEY4iFFOPKRq0fREFX4TmUPKHvaEARyWBloU4q6PpT4pC+XWfDMYicIq4GAsAqni2Tqfqts6tB7hax4djpnR5C6oVne2ueC1SNTjepFskDWmXK3qccnmjyGMxASJq+MyYFHTHc3FOJ9h+t1MbQArzxOYTRDVDBgfIbrBDgTaUxO0+lXZ8PvAkwbCskRX4qwgHozEAtGB6jOw+uLUoEnaqr+uPZZVIbEMhRWeCgby5mnj+m5+Ql1aYedp5PFu+s/h3kgkJSf3txCQJ6n0Wklw/2Bn2ROTPgGQe4rpjTDURf5t0KkU/mlibb69H1iD2s/BD77+BTMO2yFI0C3GGgbuC57bqS/HN7Ddt42UQnAAK+MFmtzIeQldWlFw2ZGObCoy44ze/Cnf2XeEQH315JDQP5kfctDYV7l44Fg3lFhFdtnmFN90vHXhBT6kVsU9HZmaRHy7kHja7D1xQpMUgfDOJOZ+m39m9HLuB2tE45oH6AptSfXzoSKQbXYQZcyYd6j+JaOci/SfHwnG+eAyOTwVHchgWCdrrUGEeytDq3Y1WVs/6f3IT3D4v9cEzvxS1ure7G/tnz3mEKsVdXi8/VrmnL7XcmI8MjZyz3WwE5CTxmhdkqsU6ROBFBNUhWSZg=="],"alg":"RS256","value":"-----BEGIN
+        PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtjSkkJEhAWdWttAbP2gk\nSxQTiBelw9EFPTWbTcwBabfiUHk0PIqnpWlCjhRMFJmGeiZBh+vAMHbdc9odGRQx\n/rZEGvq2AugCtPOGvGOcG7o3wmpizk8CYlTNQqVvAgXPo/LL9Hhbf3UvAsW4eKYJ\nZNaHJBhP8hnCDrwIjqqCitYbbdv6HCGPoiekwOO09OeNRM1rgcG7RM53kE3zRoOy\nRZzAfyAUg9Dw4BoYe0lS9+5gCVT/UUgh2veStjw0S/k71JvH2eh5yqvpZ8eJhSwj\nPX9INZdQjdLfUraeWcVoXCybzQx+fZTF7YReXls/IK1HSMyLSM2WoKZH76vLeCzB\nvQIDAQAB\n-----END
+        PUBLIC KEY-----","n":"tjSkkJEhAWdWttAbP2gkSxQTiBelw9EFPTWbTcwBabfiUHk0PIqnpWlCjhRMFJmGeiZBh-vAMHbdc9odGRQx_rZEGvq2AugCtPOGvGOcG7o3wmpizk8CYlTNQqVvAgXPo_LL9Hhbf3UvAsW4eKYJZNaHJBhP8hnCDrwIjqqCitYbbdv6HCGPoiekwOO09OeNRM1rgcG7RM53kE3zRoOyRZzAfyAUg9Dw4BoYe0lS9-5gCVT_UUgh2veStjw0S_k71JvH2eh5yqvpZ8eJhSwjPX9INZdQjdLfUraeWcVoXCybzQx-fZTF7YReXls_IK1HSMyLSM2WoKZH76vLeCzBvQ"}]}'
+    http_version: '2'
+    adapter_metadata:
+      effective_url: https://uaa.fr.cloud.gov/token_keys
+  recorded_at: Wed, 30 Apr 2025 14:57:47 GMT
+recorded_with: VCR 6.3.1
