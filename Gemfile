@@ -34,3 +34,7 @@ group :development, :test do
   gem "standard", "~> 1.43"
 end
 gem "rails_template_18f", group: :development
+
+group :test do
+  gem "climate_control", "~> 1.2"
+end

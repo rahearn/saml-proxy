@@ -38,7 +38,6 @@ variable "custom_domain_name" {
 }
 variable "host_name" {
   type        = string
-  default     = null
   description = "An optional hostname to prepend to either the custom domain name or app.cloud.gov"
 }
 

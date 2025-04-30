@@ -14,6 +14,10 @@ data "archive_file" "src" {
   ]
 }
 
+locals {
+  domain = coalesce(var.custom_domain_name, "app.cloud.gov")
+}
+
 resource "cloudfoundry_app" "app" {
   name       = "${local.app_name}-${var.env}"
   space_name = var.cf_space_name
@@ -44,11 +48,20 @@ resource "cloudfoundry_app" "app" {
   ]
 
   service_bindings = [
-    { service_instance = cloudfoundry_service_instance.egress_proxy_credentials.name }
+    { service_instance = cloudfoundry_service_instance.egress_proxy_credentials.name },
+    {
+      service_instance = cloudfoundry_service_instance.uaa_authentication_service.name,
+      params = jsonencode({
+        redirect_uri = [
+          "https://${var.host_name}.${local.domain}/oidc/callback"
+        ]
+      })
+    }
   ]
 
   depends_on = [
     cloudfoundry_service_instance.egress_proxy_credentials,
+    cloudfoundry_service_instance.uaa_authentication_service,
     module.app_space
   ]
 }

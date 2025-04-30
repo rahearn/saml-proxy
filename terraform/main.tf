@@ -40,7 +40,7 @@ module "app_route" {
   cf_org_name   = local.cf_org_name
   cf_space_name = var.cf_space_name
   app_ids       = [cloudfoundry_app.app.id]
-  hostname      = coalesce(var.host_name, "${local.app_name}-${var.env}")
+  hostname      = var.host_name
   # depends_on line is required only for initial creation and destruction. It can be commented out for updates if you see unwanted cascading effects
   depends_on = [module.app_space]
 }
@@ -90,4 +90,17 @@ resource "cloudfoundry_service_instance" "egress_proxy_credentials" {
   credentials = module.egress_proxy.json_credentials
   # depends_on line is needed only for initial creation and destruction. It should be commented out for updates to prevent unwanted cascading effects
   depends_on = [module.app_space]
+}
+
+data "cloudfoundry_service_plans" "uaa_service" {
+  name                  = "oauth-client"
+  service_offering_name = "cloud-gov-identity-provider"
+}
+
+resource "cloudfoundry_service_instance" "uaa_authentication_service" {
+  name         = "uaa-auth-service"
+  type         = "managed"
+  space        = module.app_space.space_id
+  service_plan = data.cloudfoundry_service_plans.uaa_service.service_plans.0.id
+  depends_on   = [module.app_space]
 }
