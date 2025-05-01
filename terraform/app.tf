@@ -15,7 +15,8 @@ data "archive_file" "src" {
 }
 
 locals {
-  domain = coalesce(var.custom_domain_name, "app.cloud.gov")
+  domain       = coalesce(var.custom_domain_name, "app.cloud.gov")
+  app_hostname = "https://${var.host_name}.${local.domain}"
 }
 
 resource "cloudfoundry_app" "app" {
@@ -37,6 +38,7 @@ resource "cloudfoundry_app" "app" {
     egress_proxy               = module.egress_proxy.https_proxy
     no_proxy                   = "apps.internal"
     SAML_FORM_SUBMISSION_HOSTS = join(",", var.saml_hosts)
+    BASE_SAML_LOCATION         = "${local.app_hostname}/saml"
   }
 
   processes = [
@@ -55,7 +57,7 @@ resource "cloudfoundry_app" "app" {
       service_instance = cloudfoundry_service_instance.uaa_authentication_service.name,
       params = jsonencode({
         redirect_uri = [
-          "https://${var.host_name}.${local.domain}/oidc/callback"
+          "${local.app_hostname}/oidc/callback"
         ]
       })
     }

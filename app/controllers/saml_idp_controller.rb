@@ -25,11 +25,8 @@ class SamlIdpController < ApplicationController
     if user.nil?
       head :forbidden and return
     else
-      @saml_response = idp_make_saml_response(user)
+      Rails.logger.info "Authenticated user: #{user.user_id}"
+      @saml_response = encode_response(user)
     end
-  end
-
-  private def idp_make_saml_response(user)
-    encode_response user
   end
 end
