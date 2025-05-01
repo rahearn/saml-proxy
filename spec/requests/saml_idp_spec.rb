@@ -42,16 +42,23 @@ RSpec.describe "SamlIdps", type: :request do
     end
   end
 
-  describe "POST /saml/auth" do
+  describe "GET /oidc/callback" do
     before(:each) {
       get auth_request.create(saml_settings)
     }
     let(:state) { session[:state] }
-    let(:saml_request) { session[:SAMLRequest] }
 
     context "no JWT" do
       it "returns :forbidden" do
-        post "/saml/auth", params: {SAMLRequest: saml_request, state: state}
+        expect_any_instance_of(OpenIDConnect::Client).to receive(:access_token!).and_return nil
+        get "/oidc/callback", params: {state: state, code: "feedabee"}
+        expect(response).to have_http_status(:forbidden)
+      end
+    end
+
+    context "mismatched state" do
+      it "returns :forbidden" do
+        get "/oidc/callback", params: {state: "incorrect"}
         expect(response).to have_http_status(:forbidden)
       end
     end
@@ -64,10 +71,12 @@ RSpec.describe "SamlIdps", type: :request do
           user_id: "6fa1a182-256a-4c03-8226-db16902e1b22"
         }.with_indifferent_access
       }
+      let(:access_token) { double }
       let(:user) { User.new user_fields }
       it "returns an auto-submitting form" do
-        expect(User).to receive(:from_token).with("feedabee").and_return user
-        post "/saml/auth", params: {SAMLRequest: saml_request, state: state, token: "feedabee"}
+        expect_any_instance_of(OpenIDConnect::Client).to receive(:access_token!).and_return access_token
+        expect(User).to receive(:from_token).with(access_token).and_return user
+        get "/oidc/callback", params: {state: state, code: "feedabee"}
         expect(response).to have_http_status(:success)
       end
     end

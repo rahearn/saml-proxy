@@ -17,7 +17,7 @@ RSpec.describe User, type: :model do
       before(:each) { allow(JWT).to receive(:decode).and_return user_fields }
 
       it "returns a user model" do
-        user = described_class.from_token("token")
+        user = described_class.from_token(double(id_token: "token"))
         expect(user.email).to eq "example@gsa.gov"
       end
     end

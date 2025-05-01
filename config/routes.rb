@@ -1,9 +1,7 @@
 Rails.application.routes.draw do
-  get "oidc/callback"
-
   get "/saml/metadata" => "saml_idp#show"
   get "/saml/auth" => "saml_idp#new"
-  post "/saml/auth" => "saml_idp#create"
+  get "/oidc/callback" => "saml_idp#create"
 
   root "pages#home"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

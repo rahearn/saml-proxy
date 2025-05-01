@@ -1,8 +1,8 @@
 class User
   attr_reader :user_name, :email, :user_id
 
-  def self.from_token(token)
-    jwt, _ = JWT.decode(token, nil, true, jwks: KeyLoader.key_set, algorithms: ["RS256"])
+  def self.from_token(access_token)
+    jwt, _ = JWT.decode(access_token.id_token, nil, true, jwks: KeyLoader.key_set, algorithms: ["RS256"])
     new(jwt)
   rescue => ex
     Rails.logger.error(ex)

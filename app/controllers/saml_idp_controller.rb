@@ -2,15 +2,12 @@ class SamlIdpController < ApplicationController
   include SamlIdp::Controller
   include OidcClient
 
-  protect_from_forgery
-
-  before_action :validate_saml_request, only: [:new, :create]
-
   def show
     render xml: SamlIdp.metadata.signed
   end
 
   def new
+    validate_saml_request or return
     session[:state] = SecureRandom.hex
     session[:SAMLRequest] = params[:SAMLRequest]
     session[:RelayState] = params[:RelayState]
@@ -18,8 +15,13 @@ class SamlIdpController < ApplicationController
   end
 
   def create
-    fail "Mismatched state! #{session[:state]} <> #{params[:state]}" unless session[:state] == params[:state]
-    user = User.from_token(params[:token])
+    validate_saml_request(session[:SAMLRequest]) or return
+    if session[:state] != params[:state]
+      Rails.logger.error "Mismatched state! #{session[:state]} <> #{params[:state]}"
+      head :forbidden and return
+    end
+    oidc_client.authorization_code = params[:code]
+    user = User.from_token(oidc_client.access_token!)
     if user.nil?
       head :forbidden and return
     else
