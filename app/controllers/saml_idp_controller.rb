@@ -1,5 +1,6 @@
 class SamlIdpController < ApplicationController
   include SamlIdp::Controller
+  include OidcClient
 
   protect_from_forgery
 
@@ -20,7 +21,7 @@ class SamlIdpController < ApplicationController
     fail "Mismatched state! #{session[:state]} <> #{params[:state]}" unless session[:state] == params[:state]
     user = User.from_token(params[:token])
     if user.nil?
-      fail "Could not decode User"
+      head :forbidden and return
     else
       @saml_response = idp_make_saml_response(user)
     end

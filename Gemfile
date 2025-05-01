@@ -45,4 +45,5 @@ group :test do
   gem "climate_control", "~> 1.2"
   gem "vcr", "~> 6.3"
   gem "simplecov", "~> 0.22", require: false
+  gem "ruby-saml", "~> 1.18"
 end

@@ -311,6 +311,9 @@ GEM
       rubocop (>= 1.75.0, < 2.0)
       rubocop-ast (>= 1.38.0, < 2.0)
     ruby-progressbar (1.13.0)
+    ruby-saml (1.18.0)
+      nokogiri (>= 1.13.10)
+      rexml
     saml_idp (0.16.0)
       activesupport (>= 5.2)
       builder (>= 3.0)
@@ -412,6 +415,7 @@ DEPENDENCIES
   rails (~> 8.0.2)
   rails_template_18f
   rspec-rails (~> 7.1)
+  ruby-saml (~> 1.18)
   saml_idp (~> 0.16)
   secure_headers (~> 7.1)
   simplecov (~> 0.22)
