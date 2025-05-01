@@ -63,6 +63,7 @@ module "egress_proxy" {
   cf_org_name     = local.cf_org_name
   cf_egress_space = module.egress_space.space
   name            = "egress-proxy-${var.env}"
+  instances       = var.web_instances
   allowlist = [
     "uaa.fr.cloud.gov"
   ]
