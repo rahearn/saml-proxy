@@ -1,5 +1,8 @@
-<%= form_tag(saml_acs_url) do %>
-  <%= hidden_field_tag("SAMLResponse", @saml_response) %>
-  <%= hidden_field_tag("RelayState", session[:RelayState]) %>
-  <%= submit_tag "Submit" %>
-<% end %>
+<article>
+  <%= form_tag(saml_acs_url) do %>
+    <%= hidden_field_tag("SAMLResponse", @saml_response) %>
+    <%= hidden_field_tag("RelayState", @relay_state) %>
+    <p>You should be redirected automatically. Press Continue to finish login if you are not.</p>
+    <%= submit_tag "Continue" %>
+  <% end %>
+</article>
