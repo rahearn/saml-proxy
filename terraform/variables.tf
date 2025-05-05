@@ -71,9 +71,3 @@ variable "saml_hosts" {
     "gsa.gitlab-dedicated.us"
   ]
 }
-
-variable "saml_secret_key" {
-  type        = string
-  sensitive   = true
-  description = "The secret half of config/x509.pem"
-}

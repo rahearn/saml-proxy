@@ -5,9 +5,11 @@ SamlIdp.configure do |config|
 
   config.algorithm = :sha256
 
-  if ENV["SAML_SECRET_KEY"].present?
-    config.x509_certificate = File.read(Rails.root.join("config", "x509.pem"))
-    config.secret_key = ENV["SAML_SECRET_KEY"]
+  cert = Rails.root.join "config", "x509.pem"
+  saml_secret_key = Rails.application.credentials.saml_secret_key
+  if saml_secret_key.present? && File.exist?(cert)
+    config.x509_certificate = File.read(cert)
+    config.secret_key = saml_secret_key
   end
 
   service_providers = {

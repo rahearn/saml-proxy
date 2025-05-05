@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-rmk_file="../config/master.key"
+rmk_file="../config/credentials/staging.key"
 cmd="plan"
 
 usage="

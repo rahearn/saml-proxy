@@ -39,7 +39,6 @@ resource "cloudfoundry_app" "app" {
     no_proxy                   = "apps.internal"
     SAML_FORM_SUBMISSION_HOSTS = join(",", var.saml_hosts)
     BASE_SAML_LOCATION         = "${local.app_hostname}/saml"
-    SAML_SECRET_KEY            = var.saml_secret_key
   }
 
   processes = [
