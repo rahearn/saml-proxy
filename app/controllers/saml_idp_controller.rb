@@ -7,26 +7,37 @@ class SamlIdpController < ApplicationController
   end
 
   def new
-    validate_saml_request or return
-    session[:state] = SecureRandom.hex
-    session[:SAMLRequest] = params[:SAMLRequest]
-    session[:RelayState] = params[:RelayState]
-    redirect_to oidc_client.authorization_uri(state: session[:state]), allow_other_host: true
+    if validate_saml_request
+      reset_session
+      session[:state] = SecureRandom.hex
+      session[:SAMLRequest] = params[:SAMLRequest]
+      session[:RelayState] = params[:RelayState]
+      redirect_to oidc_client.authorization_uri(state: session[:state]), allow_other_host: true
+    else
+      Rails.logger.error "Could not validate SAML request"
+      render :forbidden, status: :forbidden
+    end
   end
 
   def create
-    validate_saml_request(session[:SAMLRequest]) or return
     if session[:state] != params[:state]
-      Rails.logger.error "Mismatched state! #{session[:state]} <> #{params[:state]}"
-      head :forbidden and return
-    end
-    oidc_client.authorization_code = params[:code]
-    user = User.from_token(oidc_client.access_token!)
-    if user.nil?
-      head :forbidden and return
+      Rails.logger.error "Mismatched state param"
+      render :forbidden, status: :forbidden
+    elsif validate_saml_request(session[:SAMLRequest])
+      oidc_client.authorization_code = params[:code]
+      user = User.from_token(oidc_client.access_token!)
+      if user.nil?
+        Rails.logger.error "Could not decode JWT"
+        render :forbidden, status: :forbidden
+      else
+        Rails.logger.info "Authenticated user: #{user.user_id}"
+        @relay_state = session[:RelayState]
+        @saml_response = encode_response(user)
+        reset_session
+      end
     else
-      Rails.logger.info "Authenticated user: #{user.user_id}"
-      @saml_response = encode_response(user)
+      Rails.logger.error "Could not validate SAML request"
+      render :forbidden, status: :forbidden
     end
   end
 end
