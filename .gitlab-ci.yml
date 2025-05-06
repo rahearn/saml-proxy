@@ -102,7 +102,7 @@ terraform:plan:staging:
     - .terraform:variables:staging
   script:
     - apk add zip
-    - terraform plan -out=staging_plan.out -var-file=staging.tfvars -var rails_master_key=$RAILS_MASTER_KEY -var cf_user=$CF_USERNAME
+    - terraform plan -out=staging_plan.out -var-file=staging.tfvars -var rails_master_key=$STAGING_RAILS_MASTER_KEY -var cf_user=$CF_USERNAME
   artifacts:
     paths:
       - terraform/staging_plan.out
@@ -117,7 +117,7 @@ terraform:apply:staging:
     - terraform:plan:staging
   script:
     - apk add zip
-    - terraform apply -var-file=staging.tfvars -var rails_master_key=$RAILS_MASTER_KEY -var cf_user=$CF_USERNAME staging_plan.out
+    - terraform apply -var-file=staging.tfvars -var rails_master_key=$STAGING_RAILS_MASTER_KEY -var cf_user=$CF_USERNAME staging_plan.out
   rules:
     - if: $CI_PIPELINE_SOURCE == "schedule"
       when: never
