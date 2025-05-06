@@ -6,4 +6,6 @@ web_instances      = 2
 web_memory         = "512M"
 space_auditors = [
   # enter cloud.gov usernames that should have access to audit logs
+  "ryan.ahearn@gsa.gov",
+  "paul.hirsch@gsa.gov"
 ]

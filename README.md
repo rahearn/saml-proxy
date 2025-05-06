@@ -1,7 +1,10 @@
-Saml Proxy
+SAML Proxy
 ========================
 
-<<TKTK: quick summary of project>>
+The SAML Proxy bridges authentication requests between a SAML Service Provider (client) and an OpenID Connect IdP.
+
+It does this as a stateless set of redirects to usher the user from one side to the other and back, and must be explicitely
+configured with both the client and server sides, so it cannot be used as an open proxy.
 
 ## Development
 
@@ -11,19 +14,11 @@ guide for an introduction to the framework.
 ### Local Setup
 
 * Install Ruby 3.3.6
-* Install NodeJS 20.19.0
 * Install homebrew dependencies: `brew bundle`
-  * [PostgreSQL](https://www.postgresql.org/)
   * [Dockerize](https://github.com/jwilder/dockerize)
   * [jq](https://stedolan.github.io/jq/)
   * [ADR Tools](https://github.com/npryce/adr-tools)
-  * [Chromedriver](https://sites.google.com/chromium.org/driver/)
-    * Chromedriver must be allowed to run. You can either do that by:
-      * The command line: `xattr -d com.apple.quarantine $(which chromedriver)` (this is the only option if you are on Big Sur)
-      * Manually: clicking "allow" when you run the integration tests for the first time and a dialogue opens up
 * Install Ruby dependencies: `bundle install`
-* Install JS dependencies: `yarn install`
-* Create database and run migrations: `bundle exec rake db:setup`
 * Run the server: `bin/dev`
 * Visit the site: http://localhost:3000
 
@@ -46,7 +41,8 @@ of the test.
 
 ### Authentication
 
-TBD
+SAML Proxy has no user accounts itself. It directs users to cloud.gov UAA for authentication and then forwards that
+information to the configured `service_provider`s
 
 ### Inline `<script>` and `<style>` security
 
@@ -56,48 +52,17 @@ configuration. Use `<%= javascript_tag nonce: true %>` for inline javascript.
 See the [CSP compliant script tag helpers](./doc/adr/0004-rails-csp-compliant-script-tag-helpers.md) ADR for
 more information on setting these up successfully.
 
-## Internationalization
-
-### Managing locale files
-
-We use the gem `i18n-tasks` to manage locale files. Here are a few common tasks:
-
-Add missing keys across locales:
-```
-$ i18n-tasks missing # shows missing keys
-$ i18n-tasks add-missing # adds missing keys across locale files
-```
-
-Key sorting:
-```
-$ i18n-tasks normalize
-```
-
-Removing unused keys:
-```
-$ i18n-tasks unused # shows unused keys
-$ i18n-tasks remove-unused # removes unused keys across locale files
-```
-
-For more information on usage and helpful rake tasks to manage locale files, see [the documentation](https://github.com/glebm/i18n-tasks#usage).
-
 ## Testing
 
 ### Running tests
 
 * Tests: `bundle exec rake spec`
 * Ruby linter: `bundle exec rake standard`
-* Accessibility scan: `./bin/pa11y-scan`
 * Dynamic security scan: `./bin/owasp-scan`
 * Ruby static security scan: `bundle exec rake brakeman`
 * Ruby dependency checks: `bundle exec rake bundler:audit`
-* JS dependency checks: `bundle exec rake yarn:audit`
 
 Run everything: `bundle exec rake`
-
-#### Pa11y Scan
-
-When new pages are added to the application, ensure they are added to `./pa11y.js` so that they can be scanned.
 
 ### Automatic linting and terraform formatting
 To enable automatic ruby linting and terraform formatting on every `git commit` follow the instructions at the top of `.githooks/pre-commit`
@@ -109,9 +74,6 @@ GitLab CI is used to run all tests and scans as part of pull requests.
 Security scans are also run on a scheduled basis. DEVELOPER TODO: create a pipeline schedule in the GitLab UI and update this sentence with the cadence.
 
 ### Deployment
-
-Each environment has dependencies on a PostgreSQL RDS instance managed by cloud.gov.
-See [cloud.gov docs](https://cloud.gov/docs/services/relational-database/) for information on RDS.
 
 Terraform is used to deploy the application and supporting services. See [terraform/README.md](./terraform/README.md)
 for more information on how to set up your terraform backend and deploy the app.
@@ -126,17 +88,9 @@ The following secrets must be set within the masked and hidden [CI/CD variables]
 | ----------- | ----------- |
 | `CF_USERNAME` | cloud.gov SpaceDeployer username |
 | `CF_PASSWORD` | cloud.gov SpaceDeployer password |
-| `RAILS_MASTER_KEY` | `config/master.key` |
+| `STAGING_RAILS_MASTER_KEY` | `config/credentials/staging.key` |
 | `TERRAFORM_PUBLIC_BACKEND_CONFIG` | File-type variable containing all entries from secrets.backend.tfvars _except_ `secret_key`. Marked as `Visible` |
 | `TERRAFORM_SECRET_BACKEND_CONFIG` | File-type variable containing the `secret_key` line from secrets.backend.tfvars. Masked and hidden. |
-
-
-First, follow the `terraform/README.md` instructions to set up your backend, then:
-
-```bash
-$ cd terraform
-$ ./terraform.sh -e staging -c apply
-```
 
 
 #### Production
@@ -152,14 +106,6 @@ The following secrets must be set within the masked and hidden [CI/CD variables]
 | `PRODUCTION_RAILS_MASTER_KEY` | `config/credentials/production.key`. Should be marked as `Protected`. |
 | `TERRAFORM_PUBLIC_BACKEND_CONFIG` | File-type variable containing all entries from secrets.backend.tfvars _except_ `secret_key`. Marked as `Visible` |
 | `TERRAFORM_SECRET_BACKEND_CONFIG` | File-type variable containing the `secret_key` line from secrets.backend.tfvars. Masked and hidden. |
-
-
-First, follow the `terraform/README.md` instructions to set up your backend, then:
-
-```bash
-$ cd terraform
-$ ./terraform.sh -e production -k $(cat ../config/credentials/production.key) -c apply
-```
 
 
 ### Configuring ENV variables in cloud.gov
@@ -187,7 +133,7 @@ Configuration that changes by environment, but is public, should be added to the
 ### Public Egress Proxy
 
 Traffic to be delivered to the public internet must be proxied through the [cg-egress-proxy](https://github.com/GSA-TTS/cg-egress-proxy) app. Hostnames that the app should be able to
-reach should be added to the `egress_allowlist` terraform variable in `terraform/production.tfvars` and `terraform/staging.tfvars`
+reach should be added to the `allowlist` terraform variable in `terraform/main.tf: module.egress_proxy`
 
 See the [ruby troubleshooting doc](https://github.com/GSA-TTS/cg-egress-proxy/blob/main/docs/ruby.md) first if you have any problems making outbound connections through the proxy.
 
@@ -223,7 +169,3 @@ generating diagram updates.
 * Rebase against main before merge to ensure your code is up-to-date!
 * Merge after review.
   * Squash commits into meaningful chunks of work and ensure that your commit messages convey meaning.
-
-## Story Acceptance
-
-TBD
