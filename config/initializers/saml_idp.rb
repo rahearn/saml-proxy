@@ -1,5 +1,8 @@
 service_providers = {
   "GDG" => {
+    validate_signature: true,
+    sign_authn_request: true,
+    fingerprint: "",
     response_hosts: ["gsa.gitlab-dedicated.us"]
   }
 }
@@ -33,6 +36,7 @@ end
 if !Rails.env.production?
   service_providers["CAPOC"] = {
     validate_signature: true,
+    sign_authn_request: true,
     fingerprint: "35:F2:D0:60:3E:6D:2A:8D:5F:04:47:3B:C5:8C:DF:14:B7:F7:F5:DB:17:5B:2B:84:6A:73:76:35:FB:69:CD:F1",
     metadata_url: "https://continuous_monitoring-staging.app.cloud.gov/users/auth/saml/metadata"
   }
