@@ -64,9 +64,9 @@ module "egress_proxy" {
   cf_egress_space = module.egress_space.space
   name            = "egress-proxy-${var.env}"
   instances       = var.web_instances
-  allowlist = [
+  allowlist = setunion(var.saml_hosts, [
     "uaa.fr.cloud.gov"
-  ]
+  ])
   # depends_on line is needed only for initial creation and destruction. It should be commented out for updates to prevent unwanted cascading effects
   depends_on = [module.app_space, module.egress_space]
 }

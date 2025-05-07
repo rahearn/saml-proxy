@@ -8,7 +8,7 @@ Rails.application.configure do
   config.content_security_policy do |policy|
     policy.default_src :self
     policy.font_src :self
-    policy.form_action :self, *ENV["SAML_FORM_SUBMISSION_HOSTS"]&.split(",")
+    policy.form_action :self, *ENV.fetch("SAML_FORM_SUBMISSION_HOSTS", "localhost:3001").split(",")
     policy.frame_ancestors :none
     policy.img_src :self, :data
     policy.object_src :none
