@@ -11,7 +11,7 @@ gem "puma", ">= 5.0"
 gem "openid_connect", "~> 2.3"
 gem "faraday-typhoeus", "~> 1.1"
 gem "jwt", "~> 2.10"
-gem "saml_idp", "~> 0.16"
+gem "saml_idp", github: "GSA-TTS/saml_idp", branch: "load-cert-from-sp-metadata"
 
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", require: false

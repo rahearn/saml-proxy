@@ -1,3 +1,16 @@
+GIT
+  remote: https://github.com/GSA-TTS/saml_idp.git
+  revision: a4d0a8936125af9dc44eb3aae0ac410dd143f3a3
+  branch: load-cert-from-sp-metadata
+  specs:
+    saml_idp (0.16.0)
+      activesupport (>= 5.2)
+      builder (>= 3.0)
+      nokogiri (>= 1.6.2)
+      ostruct
+      rexml
+      xmlenc (>= 0.7.1)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -203,6 +216,7 @@ GEM
       tzinfo
       validate_url
       webfinger (~> 2.0)
+    ostruct (0.6.1)
     parallel (1.27.0)
     parser (3.3.8.0)
       ast (~> 2.4.1)
@@ -211,14 +225,14 @@ GEM
       prettyprint
     prettyprint (0.2.0)
     prism (1.4.0)
-    psych (5.2.3)
+    psych (5.2.4)
       date
       stringio
     public_suffix (6.0.2)
     puma (6.6.0)
       nio4r (~> 2.0)
     racc (1.8.1)
-    rack (3.1.13)
+    rack (3.1.14)
     rack-oauth2 (2.2.1)
       activesupport
       attr_required
@@ -226,7 +240,7 @@ GEM
       faraday-follow_redirects
       json-jwt (>= 1.11.0)
       rack (>= 2.1.0)
-    rack-session (2.1.0)
+    rack-session (2.1.1)
       base64 (>= 0.1.0)
       rack (>= 3.0.0)
     rack-test (2.2.0)
@@ -277,10 +291,10 @@ GEM
     rexml (3.4.1)
     rspec-core (3.13.3)
       rspec-support (~> 3.13.0)
-    rspec-expectations (3.13.3)
+    rspec-expectations (3.13.4)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.13.0)
-    rspec-mocks (3.13.2)
+    rspec-mocks (3.13.4)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.13.0)
     rspec-rails (7.1.1)
@@ -291,8 +305,8 @@ GEM
       rspec-expectations (~> 3.13)
       rspec-mocks (~> 3.13)
       rspec-support (~> 3.13)
-    rspec-support (3.13.2)
-    rubocop (1.75.4)
+    rspec-support (3.13.3)
+    rubocop (1.75.5)
       json (~> 2.3)
       language_server-protocol (~> 3.17.0.2)
       lint_roller (~> 1.1.0)
@@ -314,12 +328,6 @@ GEM
     ruby-saml (1.18.0)
       nokogiri (>= 1.13.10)
       rexml
-    saml_idp (0.16.0)
-      activesupport (>= 5.2)
-      builder (>= 3.0)
-      nokogiri (>= 1.6.2)
-      rexml
-      xmlenc (>= 0.7.1)
     secure_headers (7.1.0)
     securerandom (0.4.1)
     simplecov (0.22.0)
@@ -416,7 +424,7 @@ DEPENDENCIES
   rails_template_18f
   rspec-rails (~> 7.1)
   ruby-saml (~> 1.18)
-  saml_idp (~> 0.16)
+  saml_idp!
   secure_headers (~> 7.1)
   simplecov (~> 0.22)
   standard (~> 1.43)
