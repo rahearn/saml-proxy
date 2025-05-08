@@ -31,11 +31,6 @@ variable "allow_space_ssh" {
 }
 
 # routing settings
-variable "custom_domain_name" {
-  type        = string
-  default     = null
-  description = "The custom domain name to associate with the app. Leave as null to disable the domain service and use an *.app.cloud.gov route"
-}
 variable "host_name" {
   type        = string
   description = "An optional hostname to prepend to either the custom domain name or app.cloud.gov"

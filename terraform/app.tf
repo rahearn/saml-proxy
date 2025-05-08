@@ -15,8 +15,7 @@ data "archive_file" "src" {
 }
 
 locals {
-  domain       = coalesce(var.custom_domain_name, "app.cloud.gov")
-  app_hostname = "https://${var.host_name}.${local.domain}"
+  app_hostname = "https://${var.host_name}.app.cloud.gov"
 }
 
 resource "cloudfoundry_app" "app" {
