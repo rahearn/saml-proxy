@@ -15,26 +15,7 @@ module "app_space" {
   auditors      = var.space_auditors
 }
 
-###########################################################################
-# Before setting var.custom_domain_name, ensure the ACME challenge record has been created:
-# See https://cloud.gov/docs/services/external-domain-service/#how-to-create-an-instance-of-this-service
-###########################################################################
-module "domain" {
-  count  = (var.custom_domain_name == null ? 0 : 1)
-  source = "github.com/gsa-tts/terraform-cloudgov//domain?ref=v2.3.0"
-
-  cf_org_name   = local.cf_org_name
-  cf_space      = module.app_space.space
-  cdn_plan_name = "domain"
-  domain_name   = var.custom_domain_name
-  create_domain = true
-  app_ids       = [cloudfoundry_app.app.id]
-  host_name     = var.host_name
-  # depends_on line is required only for initial creation and destruction. It can be commented out for updates if you see unwanted cascading effects
-  depends_on = [module.app_space]
-}
 module "app_route" {
-  count  = (var.custom_domain_name == null ? 1 : 0)
   source = "github.com/gsa-tts/terraform-cloudgov//app_route?ref=v2.3.0"
 
   cf_org_name   = local.cf_org_name
