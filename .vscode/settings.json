@@ -1,0 +1,9 @@
+{
+  "plantuml.diagramsRoot": "doc/compliance",
+  "plantuml.exportFormat": "png",
+  "plantuml.exportSubFolder": false,
+  "plantuml.exportOutDir": "doc/compliance/rendered",
+  "plantuml.fileExtensions": ".wsd,.pu,.puml,.plantuml,.iuml,.md",
+  "plantuml.render": "PlantUMLServer",
+  "plantuml.server": "http://localhost:8080"
+}
