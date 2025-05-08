@@ -56,6 +56,7 @@ Rel(developer, gitlabci, "Publish code", "git ssh (22)")
 Rel(gitlabci, cg_api, "Deploy App", "Auth: SpaceDeployer Service Account, https (443)")
 Rel(app, proxy, "Proxy outbound connections", "https (443)")
 Rel(proxy, cg_uaa, "Retrieve JWT signing keys", "https (443)")
+Rel(proxy, gdg, "Retrieve SAML SP metadata", "https (443)")
 Rel(browser, cg_uaa, "Provide authentication credentials", "https (443)")
 @enduml
 ```

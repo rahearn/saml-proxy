@@ -31,7 +31,7 @@ These plugins may be helpful for editing diagrams.
 | Setting name | Value |
 | ------------ | ----- |
 | Diagrams Root | `doc/compliance` |
-| Export Format | `svg` |
+| Export Format | `png` |
 | Export Out Dir | `doc/compliance/rendered` |
 | Export Sub Folder | unchecked |
 | File Extensions | append `.md` |
