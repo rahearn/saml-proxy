@@ -32,12 +32,36 @@ class SamlIdpController < ApplicationController
       else
         Rails.logger.info "Authenticated user: #{user.user_id}"
         @relay_state = session[:RelayState]
-        @saml_response = encode_response(user)
+        @saml_response = encode_response(user, encode_opts)
       end
     else
       Rails.logger.error "Could not validate SAML request: #{saml_request.errors.join(", ")}"
       render :forbidden, status: :forbidden
     end
     reset_session
+  end
+
+  private
+
+  def encode_opts
+    opts = {
+      signed_message: true
+    }
+    if encryption_cert.present?
+      opts[:encryption] = {
+        cert: encryption_cert,
+        block_encryption: "aes256-cbc",
+        key_transport: "rsa-oaep-mgf1p"
+      }
+    end
+    opts
+  end
+
+  def encryption_cert
+    @encryption_cert ||= begin
+      sp = saml_request.service_provider
+      cert = sp.current_metadata&.encryption_certificate
+      cert.present? ? cert : sp.cert
+    end
   end
 end

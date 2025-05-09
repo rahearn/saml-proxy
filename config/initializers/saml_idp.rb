@@ -1,9 +1,9 @@
 service_providers = {
-  "GDG" => {
+  "https://gsa.gitlab-dedicated.us" => {
     validate_signature: true,
     sign_authn_request: true,
     fingerprint: "",
-    response_hosts: ["gsa.gitlab-dedicated.us"]
+    metadata_url: "https://gsa.gitlab-dedicated.us/users/auth/saml/metadata"
   }
 }
 sp_metadata = {}
