@@ -17,8 +17,8 @@ These steps only need to be run once per project.
 1. Add any users who should have access to the management space to `users.auto.tfvars`
 1. Run `./apply.sh`
 1. Setup your CI/CD Pipeline to run terraform and deploy your staging and production environments
-    1. Copy the `cf_user` and `cf_password` credentials from `secrets.cicd.tfvars` to your CI/CD secrets using the instructions in the base README
-1. Delete `secrets.cicd.tfvars`
+    1. Copy the `cf_user` and `cf_password` credentials from `secrets.<env>.tfvars` to your CI/CD secrets using the instructions in the base README
+1. Delete `secrets.<env>.tfvars`
 1. Delete `.shadowenv.d/500_tf_backend_secrets.lisp` if you won't be running terraform locally
 
 ### To make changes to the bootstrap module

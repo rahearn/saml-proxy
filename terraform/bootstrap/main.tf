@@ -16,30 +16,22 @@ terraform {
 provider "cloudfoundry" {}
 
 locals {
-  org_name   = "gsa-tts-devtools-prototyping"
-  space_name = "saml-proxy-mgmt"
+  orgs = {
+    "staging"    = "cloud-gov-devtools-staging"
+    "production" = "cloud-gov-devtools-production"
+  }
+  space_name = "devtools-saas-mgmt"
 }
 
 data "cloudfoundry_org" "org" {
-  name = local.org_name
+  for_each = local.orgs
+  name     = each.value
 }
 
-variable "terraform_users" {
-  type        = set(string)
-  description = "The list of developer emails and service account usernames who should be granted access to retrieve state bucket credentials"
-
-  validation {
-    condition     = length(var.terraform_users) > 0
-    error_message = "terraform_users must include at least the current user calling apply.sh"
-  }
-}
-
-module "mgmt_space" {
-  source = "github.com/gsa-tts/terraform-cloudgov//cg_space?ref=v2.3.0"
-
-  cf_org_name   = local.org_name
-  cf_space_name = local.space_name
-  developers    = var.terraform_users
+data "cloudfoundry_space" "mgmt_space" {
+  for_each = local.orgs
+  org      = data.cloudfoundry_org.org[each.key].id
+  name     = local.space_name
 }
 
 data "cloudfoundry_service_plans" "cg_service_account" {
@@ -47,46 +39,58 @@ data "cloudfoundry_service_plans" "cg_service_account" {
   service_offering_name = "cloud-gov-service-account"
 }
 locals {
-  sa_service_name    = "saml_proxy-cicd-deployer"
-  sa_key_name        = "cicd-deployer-access-key"
-  sa_bot_credentials = jsondecode(data.cloudfoundry_service_credential_binding.runner_sa_key.credential_bindings.0.credential_binding).credentials
-  sa_cf_username     = nonsensitive(local.sa_bot_credentials.username)
-  sa_cf_password     = local.sa_bot_credentials.password
+  sa_service_name               = "saml_proxy-cicd-deployer"
+  sa_key_name                   = "cicd-deployer-access-key"
+  staging_sa_bot_credentials    = jsondecode(data.cloudfoundry_service_credential_binding.runner_sa_key["staging"].credential_bindings.0.credential_binding).credentials
+  production_sa_bot_credentials = jsondecode(data.cloudfoundry_service_credential_binding.runner_sa_key["production"].credential_bindings.0.credential_binding).credentials
+  sa_cf_username = {
+    "staging"    = nonsensitive(local.staging_sa_bot_credentials.username)
+    "production" = nonsensitive(local.production_sa_bot_credentials.username)
+  }
+  sa_cf_password = {
+    "staging"    = local.staging_sa_bot_credentials.password
+    "production" = local.production_sa_bot_credentials.password
+  }
 }
 resource "cloudfoundry_service_instance" "runner_service_account" {
+  for_each     = local.orgs
   name         = local.sa_service_name
   type         = "managed"
   service_plan = data.cloudfoundry_service_plans.cg_service_account.service_plans.0.id
-  space        = module.mgmt_space.space_id
-  depends_on   = [module.mgmt_space]
+  space        = data.cloudfoundry_space.mgmt_space[each.key].id
 }
 resource "cloudfoundry_service_credential_binding" "runner_sa_key" {
+  for_each         = local.orgs
   name             = local.sa_key_name
-  service_instance = cloudfoundry_service_instance.runner_service_account.id
+  service_instance = cloudfoundry_service_instance.runner_service_account[each.key].id
   type             = "key"
 }
 data "cloudfoundry_service_credential_binding" "runner_sa_key" {
+  for_each         = local.orgs
   name             = local.sa_key_name
-  service_instance = cloudfoundry_service_instance.runner_service_account.id
+  service_instance = cloudfoundry_service_instance.runner_service_account[each.key].id
   depends_on       = [cloudfoundry_service_credential_binding.runner_sa_key]
 }
 data "cloudfoundry_user" "sa_user" {
-  name = local.sa_cf_username
+  for_each = local.orgs
+  name     = local.sa_cf_username[each.key]
 }
 resource "cloudfoundry_org_role" "sa_org_manager" {
-  user = data.cloudfoundry_user.sa_user.users.0.id
-  type = "organization_manager"
-  org  = data.cloudfoundry_org.org.id
+  for_each = local.orgs
+  user     = data.cloudfoundry_user.sa_user[each.key].users.0.id
+  type     = "organization_manager"
+  org      = data.cloudfoundry_org.org[each.key].id
 }
 
 resource "local_sensitive_file" "bot_secrets_file" {
-  filename        = "${path.module}/secrets.cicd.tfvars"
+  for_each        = local.orgs
+  filename        = "${path.module}/secrets.${each.key}.tfvars"
   file_permission = "0600"
 
   content = templatefile("${path.module}/bot_secrets.tftpl", {
     service_name = local.sa_service_name,
     key_name     = local.sa_key_name,
-    username     = local.sa_cf_username,
-    password     = local.sa_cf_password
+    username     = local.sa_cf_username[each.key],
+    password     = local.sa_cf_password[each.key]
   })
 }
