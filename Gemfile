@@ -30,16 +30,16 @@ end
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
+  gem "rails_template_18f", github: "gsa-tts/rails-template", branch: "gitlab-backend"
 end
 gem "secure_headers", "~> 7.1"
 
 group :development, :test do
-  gem "rspec-rails", "~> 7.1"
+  gem "rspec-rails", "~> 8.0"
   gem "dotenv-rails", "~> 3.1"
   gem "bundler-audit", "~> 0.9"
   gem "standard", "~> 1.43"
 end
-gem "rails_template_18f", group: :development
 
 group :test do
   gem "climate_control", "~> 1.2"
