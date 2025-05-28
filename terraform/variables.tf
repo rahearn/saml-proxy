@@ -5,6 +5,10 @@ variable "cf_user" {
 }
 
 # app_space settings
+variable "cf_org_name" {
+  type        = string
+  description = "The org name to deploy the app into"
+}
 variable "cf_space_name" {
   type        = string
   description = "The space name to deploy the app into"

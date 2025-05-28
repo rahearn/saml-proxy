@@ -1,5 +1,4 @@
 locals {
-  cf_org_name     = "gsa-tts-devtools-prototyping"
   app_name        = "saml-proxy"
   space_deployers = setunion([var.cf_user], var.space_deployers)
 }
@@ -7,7 +6,7 @@ locals {
 module "app_space" {
   source = "github.com/gsa-tts/terraform-cloudgov//cg_space?ref=v2.3.0"
 
-  cf_org_name   = local.cf_org_name
+  cf_org_name   = var.cf_org_name
   cf_space_name = var.cf_space_name
   allow_ssh     = var.allow_ssh
   deployers     = local.space_deployers
@@ -18,7 +17,7 @@ module "app_space" {
 module "app_route" {
   source = "github.com/gsa-tts/terraform-cloudgov//app_route?ref=v2.3.0"
 
-  cf_org_name   = local.cf_org_name
+  cf_org_name   = var.cf_org_name
   cf_space_name = var.cf_space_name
   app_ids       = [cloudfoundry_app.app.id]
   hostname      = var.host_name
@@ -29,7 +28,7 @@ module "app_route" {
 module "egress_space" {
   source = "github.com/gsa-tts/terraform-cloudgov//cg_space?ref=v2.3.0"
 
-  cf_org_name          = local.cf_org_name
+  cf_org_name          = var.cf_org_name
   cf_space_name        = "${var.cf_space_name}-egress"
   allow_ssh            = var.allow_ssh
   deployers            = local.space_deployers
@@ -41,7 +40,7 @@ module "egress_space" {
 module "egress_proxy" {
   source = "github.com/gsa-tts/terraform-cloudgov//egress_proxy?ref=v2.3.0"
 
-  cf_org_name     = local.cf_org_name
+  cf_org_name     = var.cf_org_name
   cf_egress_space = module.egress_space.space
   name            = "egress-proxy-${var.env}"
   instances       = var.web_instances

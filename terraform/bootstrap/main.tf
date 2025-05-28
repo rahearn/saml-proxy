@@ -17,7 +17,7 @@ provider "cloudfoundry" {}
 
 locals {
   org_name   = "gsa-tts-devtools-prototyping"
-  space_name = "saml-proxy-prod-mgmt"
+  space_name = "saml-proxy-mgmt"
 }
 
 data "cloudfoundry_org" "org" {

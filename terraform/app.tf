@@ -21,7 +21,7 @@ locals {
 resource "cloudfoundry_app" "app" {
   name       = "${local.app_name}-${var.env}"
   space_name = var.cf_space_name
-  org_name   = local.cf_org_name
+  org_name   = var.cf_org_name
 
   path             = data.archive_file.src.output_path
   source_code_hash = data.archive_file.src.output_base64sha256
