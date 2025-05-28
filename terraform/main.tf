@@ -1,6 +1,6 @@
 locals {
   cf_org_name     = "gsa-tts-devtools-prototyping"
-  app_name        = "saml_proxy"
+  app_name        = "saml-proxy"
   space_deployers = setunion([var.cf_user], var.space_deployers)
 }
 
@@ -9,7 +9,7 @@ module "app_space" {
 
   cf_org_name   = local.cf_org_name
   cf_space_name = var.cf_space_name
-  allow_ssh     = var.allow_space_ssh
+  allow_ssh     = var.allow_ssh
   deployers     = local.space_deployers
   developers    = var.space_developers
   auditors      = var.space_auditors
@@ -31,7 +31,7 @@ module "egress_space" {
 
   cf_org_name          = local.cf_org_name
   cf_space_name        = "${var.cf_space_name}-egress"
-  allow_ssh            = var.allow_space_ssh
+  allow_ssh            = var.allow_ssh
   deployers            = local.space_deployers
   developers           = var.space_developers
   auditors             = var.space_auditors

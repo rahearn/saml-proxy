@@ -15,6 +15,7 @@ guide for an introduction to the framework.
 
 * Install Ruby 3.3.6
 * Install homebrew dependencies: `brew bundle`
+  * [shadowenv](https://shopify.github.io/shadowenv/)
   * [Dockerize](https://github.com/jwilder/dockerize)
   * [jq](https://stedolan.github.io/jq/)
   * [ADR Tools](https://github.com/npryce/adr-tools)
@@ -89,8 +90,6 @@ The following secrets must be set within the masked and hidden [CI/CD variables]
 | `CF_USERNAME` | cloud.gov SpaceDeployer username |
 | `CF_PASSWORD` | cloud.gov SpaceDeployer password |
 | `STAGING_RAILS_MASTER_KEY` | `config/credentials/staging.key` |
-| `TERRAFORM_PUBLIC_BACKEND_CONFIG` | File-type variable containing all entries from secrets.backend.tfvars _except_ `secret_key`. Marked as `Visible` |
-| `TERRAFORM_SECRET_BACKEND_CONFIG` | File-type variable containing the `secret_key` line from secrets.backend.tfvars. Masked and hidden. |
 
 
 #### Production
@@ -104,8 +103,6 @@ The following secrets must be set within the masked and hidden [CI/CD variables]
 | `CF_USERNAME` | cloud.gov SpaceDeployer username |
 | `CF_PASSWORD` | cloud.gov SpaceDeployer password |
 | `PRODUCTION_RAILS_MASTER_KEY` | `config/credentials/production.key`. Should be marked as `Protected`. |
-| `TERRAFORM_PUBLIC_BACKEND_CONFIG` | File-type variable containing all entries from secrets.backend.tfvars _except_ `secret_key`. Marked as `Visible` |
-| `TERRAFORM_SECRET_BACKEND_CONFIG` | File-type variable containing the `secret_key` line from secrets.backend.tfvars. Masked and hidden. |
 
 
 ### Configuring ENV variables in cloud.gov

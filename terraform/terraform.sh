@@ -56,6 +56,11 @@ if [[ "$1" = "--" ]]; then
   shift 1
 fi
 
+if [ -z "$GITLAB_PROJECT_ID"] || [ -z "$GITLAB_HOSTNAME" ]; then
+  echo "GITLAB_PROJECT_ID or GITLAB_HOSTNAME have not been set. Run bootstrap/setup_shadowenv.sh first"
+  exit 1
+fi
+
 if [[ -z "$env" ]]; then
   echo "-e <ENV_NAME> is required"
   echo "$usage"
@@ -71,22 +76,19 @@ fi
 cf spaces &> /dev/null || cf login -a api.fr.cloud.gov --sso
 
 tfm_needs_init=true
+tf_state_address="https://$GITLAB_HOSTNAME/api/v4/projects/$GITLAB_PROJECT_ID/terraform/state/$env"
 if [[ -f .terraform/terraform.tfstate ]]; then
-  backend_state_env=`cat .terraform/terraform.tfstate | jq -r ".backend.config.key" | cut -d '.' -f3`
-  if [[ "$backend_state_env" = "$env" ]]; then
+  backend_state_address=`cat .terraform/terraform.tfstate | jq -r ".backend.config.address"`
+  if [[ "$backend_state_address" = "$tf_state_address" ]]; then
     tfm_needs_init=false
   fi
 fi
 
 if [[ $tfm_needs_init = true ]]; then
-  if [[ ! -f secrets.backend.tfvars ]]; then
-    echo "=============================================================================================================="
-    echo "= Recreating backend config file. It is fine if this step wants to delete any local_sensitive_file resources"
-    echo "=============================================================================================================="
-    (cd bootstrap && ./apply.sh -auto-approve)
-  fi
-  terraform init -backend-config=secrets.backend.tfvars -backend-config="key=terraform.tfstate.$env" -reconfigure
-  rm secrets.backend.tfvars
+  terraform init -reconfigure \
+    -backend-config="address=$tf_state_address" \
+    -backend-config="lock_address=$tf_state_address/lock" \
+    -backend-config="unlock_address=$tf_state_address/lock"
 fi
 
 echo "=============================================================================================================="

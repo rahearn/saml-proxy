@@ -7,11 +7,10 @@ terraform {
     }
   }
 
-  backend "s3" {
-    encrypt           = true
-    use_lockfile      = true
-    use_fips_endpoint = true
-    region            = "us-gov-west-1"
+  backend "http" {
+    lock_method    = "POST"
+    unlock_method  = "DELETE"
+    retry_wait_min = 5
   }
 }
 

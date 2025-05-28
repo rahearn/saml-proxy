@@ -1,7 +1,5 @@
-cf_space_name   = "saml-proxy-prod"
-env             = "production"
-allow_space_ssh = false
-# host_name must be unique across cloud.gov, default is "saml_proxy-${var.env}"
+cf_space_name = "saml-proxy-prod"
+env           = "production"
 host_name     = "saml-proxy"
 saml_hosts    = ["gsa.gitlab-dedicated.us"]
 web_instances = 2

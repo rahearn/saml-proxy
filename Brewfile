@@ -9,3 +9,6 @@ brew "jq"
 
 # helper scripts for creating new ADRs
 brew "adr-tools"
+
+# shadowenv for loading terraform backend secrets
+brew "shadowenv"

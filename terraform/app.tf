@@ -22,12 +22,12 @@ resource "cloudfoundry_app" "app" {
   name       = "${local.app_name}-${var.env}"
   space_name = var.cf_space_name
   org_name   = local.cf_org_name
-  enable_ssh = var.allow_space_ssh
 
   path             = data.archive_file.src.output_path
   source_code_hash = data.archive_file.src.output_base64sha256
   buildpacks       = ["ruby_buildpack"]
   strategy         = "rolling"
+  enable_ssh       = var.allow_ssh
 
   environment = {
     RAILS_ENV                  = var.env
