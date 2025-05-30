@@ -30,7 +30,7 @@ end
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
-  gem "rails_template_18f", github: "gsa-tts/rails-template", branch: "gitlab-backend"
+  gem "rails_template_18f", github: "gsa-tts/rails-template"
 end
 gem "secure_headers", "~> 7.1"
 

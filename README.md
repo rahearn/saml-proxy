@@ -13,7 +13,7 @@ guide for an introduction to the framework.
 
 ### Local Setup
 
-* Install Ruby 3.3.6
+* Install Ruby 3.4.4
 * Install homebrew dependencies: `brew bundle`
   * [shadowenv](https://shopify.github.io/shadowenv/)
   * [Dockerize](https://github.com/jwilder/dockerize)

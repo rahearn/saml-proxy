@@ -31,7 +31,7 @@ Boundary(aws, "AWS GovCloud") {
         Boundary(atob, "ATO boundary") {
             System_Boundary(inventory, "Application") {
                 Boundary(restricted_space, "Restricted egress space") {
-                    Container(app, "<&layers> Saml Proxy", "Ruby 3.3.6, Rails 8.0.2", "Bridge SAML authentication requests to OpenID Connect IdP")
+                    Container(app, "<&layers> Saml Proxy", "Ruby 3.4, Rails 8.0", "Bridge SAML authentication requests to OpenID Connect IdP")
                 }
                 Boundary(egress_space, "Public egress space") {
                     Container(proxy, "<&layers> Egress Proxy", "Caddy, cg-egress-proxy", "Proxy with allow-list of external connections")

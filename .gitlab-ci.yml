@@ -16,7 +16,7 @@ variables:
   POSTGRES_DB: saml_proxy_test
   POSTGRES_PASSWORD: not-actually-secret
   POSTGRES_VERSION: 15
-  RUBY_VERSION: 3.3.6
+  RUBY_VERSION: 3.4.4
 
 include:
   - local: ".gitlab/ruby.yml"
