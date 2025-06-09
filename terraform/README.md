@@ -14,7 +14,6 @@ These steps only need to be run once per project.
 
 1. `cd bootstrap`
 1. Run `./setup_shadowenv.sh`
-1. Add any users who should have access to the management space to `users.auto.tfvars`
 1. Run `./apply.sh`
 1. Setup your CI/CD Pipeline to run terraform and deploy your staging and production environments
     1. Copy the `cf_user` and `cf_password` credentials from `secrets.<env>.tfvars` to your CI/CD secrets using the instructions in the base README
@@ -23,10 +22,14 @@ These steps only need to be run once per project.
 
 ### To make changes to the bootstrap module
 
-*This should not be necessary in most cases, other than adding or removing users who should have access to the mgmt space in `bootstrap/users.auto.tfvars`*
+*This should not be necessary in most cases, with the exception of rotating the bot's passwords*
 
 1. Make your changes
 1. Run `./apply.sh` and verify the plan before entering `yes`
+
+To rotate credentials, run:
+
+`./apply.sh -replace 'cloudfoundry_service_credential_binding.runner_sa_key["staging"]' -replace 'cloudfoundry_service_credential_binding.runner_sa_key["production"]'`
 
 ## Set up a sandbox environment or review app
 
@@ -57,7 +60,6 @@ These steps only need to be run once per project.
 |- bootstrap/
 |  |- main.tf
 |  |- apply.sh
-|  |- users.auto.tfvars
 |  |- setup_shadowenv.sh
 |  |- bot_secrets.tftpl
 |- dist/
@@ -82,5 +84,4 @@ In the root module:
 In the bootstrap module:
 - `main.tf` sets up a management space, an s3 bucket to store terraform state files, and an initial SpaceDeployer for the system
 - `apply.sh` Helper script to setup terraform and call `terraform apply`. Any arguments are passed through to the `apply` call
-- `users.auto.tfvars` this file defines the list of cloud.gov accounts that should have access to the management space
 - `setup_shadowenv.sh` helper script to set terraform backend values using the gitlab http backend in shadowenv
