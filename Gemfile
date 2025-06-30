@@ -10,7 +10,7 @@ gem "puma", ">= 5.0"
 # Auth gems
 gem "openid_connect", "~> 2.3"
 gem "faraday-typhoeus", "~> 1.1"
-gem "jwt", "~> 2.10"
+gem "jwt", "~> 3.1"
 gem "saml_idp", github: "GSA-TTS/saml_idp", branch: "load-cert-from-sp-metadata"
 
 # Reduces boot times through caching; required in config/boot.rb
@@ -30,7 +30,7 @@ end
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
-  gem "rails_template_18f", github: "gsa-tts/rails-template"
+  gem "rails_template_18f", "~> 2.2"
 end
 gem "secure_headers", "~> 7.1"
 

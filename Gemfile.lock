@@ -11,16 +11,6 @@ GIT
       rexml
       xmlenc (>= 0.7.1)
 
-GIT
-  remote: https://github.com/gsa-tts/rails-template.git
-  revision: 008cf8e4f71b7e169ebe4f60c159a33d6299dba9
-  specs:
-    rails_template_18f (2.1.0)
-      activesupport (~> 8.0.1)
-      colorize (~> 1.1)
-      railties (~> 8.0.1)
-      thor (~> 1.3)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -117,7 +107,7 @@ GEM
     connection_pool (2.5.3)
     crass (1.0.6)
     date (3.4.1)
-    debug (1.10.0)
+    debug (1.11.0)
       irb (~> 1.10)
       reline (>= 0.3.8)
     diff-lcs (1.6.2)
@@ -139,7 +129,7 @@ GEM
       logger
     faraday-follow_redirects (0.3.0)
       faraday (>= 1, < 3)
-    faraday-net_http (3.4.0)
+    faraday-net_http (3.4.1)
       net-http (>= 0.5.0)
     faraday-typhoeus (1.1.0)
       faraday (~> 2.0)
@@ -169,7 +159,7 @@ GEM
       bindata
       faraday (~> 2.0)
       faraday-follow_redirects
-    jwt (2.10.1)
+    jwt (3.1.2)
       base64
     language_server-protocol (3.17.0.5)
     lint_roller (1.1.0)
@@ -188,7 +178,7 @@ GEM
     msgpack (1.8.0)
     net-http (0.6.0)
       uri
-    net-imap (0.5.8)
+    net-imap (0.5.9)
       date
       net-protocol
     net-pop (0.1.2)
@@ -227,7 +217,7 @@ GEM
       tzinfo
       validate_url
       webfinger (~> 2.0)
-    ostruct (0.6.1)
+    ostruct (0.6.2)
     parallel (1.27.0)
     parser (3.3.8.0)
       ast (~> 2.4.1)
@@ -279,6 +269,11 @@ GEM
     rails-html-sanitizer (1.6.2)
       loofah (~> 2.21)
       nokogiri (>= 1.15.7, != 1.16.7, != 1.16.6, != 1.16.5, != 1.16.4, != 1.16.3, != 1.16.2, != 1.16.1, != 1.16.0.rc1, != 1.16.0)
+    rails_template_18f (2.2.0)
+      activesupport (~> 8.0.1)
+      colorize (~> 1.1)
+      railties (~> 8.0.1)
+      thor (~> 1.3)
     railties (8.0.2)
       actionpack (= 8.0.2)
       activesupport (= 8.0.2)
@@ -289,14 +284,14 @@ GEM
       zeitwerk (~> 2.6)
     rainbow (3.1.1)
     rake (13.3.0)
-    rdoc (6.14.0)
+    rdoc (6.14.1)
       erb
       psych (>= 4.0.0)
     regexp_parser (2.10.0)
     reline (0.6.1)
       io-console (~> 0.5)
     rexml (3.4.1)
-    rspec-core (3.13.4)
+    rspec-core (3.13.5)
       rspec-support (~> 3.13.0)
     rspec-expectations (3.13.5)
       diff-lcs (>= 1.2.0, < 2.0)
@@ -304,7 +299,7 @@ GEM
     rspec-mocks (3.13.5)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.13.0)
-    rspec-rails (8.0.0)
+    rspec-rails (8.0.1)
       actionpack (>= 7.2)
       activesupport (>= 7.2)
       railties (>= 7.2)
@@ -362,11 +357,11 @@ GEM
       faraday (~> 2.0)
       faraday-follow_redirects
     thor (1.3.2)
-    thruster (0.1.13)
-    thruster (0.1.13-aarch64-linux)
-    thruster (0.1.13-arm64-darwin)
-    thruster (0.1.13-x86_64-darwin)
-    thruster (0.1.13-x86_64-linux)
+    thruster (0.1.14)
+    thruster (0.1.14-aarch64-linux)
+    thruster (0.1.14-arm64-darwin)
+    thruster (0.1.14-x86_64-darwin)
+    thruster (0.1.14-x86_64-linux)
     timeout (0.4.3)
     typhoeus (1.4.1)
       ethon (>= 0.9.0)
@@ -424,11 +419,11 @@ DEPENDENCIES
   debug
   dotenv-rails (~> 3.1)
   faraday-typhoeus (~> 1.1)
-  jwt (~> 2.10)
+  jwt (~> 3.1)
   openid_connect (~> 2.3)
   puma (>= 5.0)
   rails (~> 8.0.2)
-  rails_template_18f!
+  rails_template_18f (~> 2.2)
   rspec-rails (~> 8.0)
   ruby-saml (~> 1.18)
   saml_idp!
